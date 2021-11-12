@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:recipes/screens/explore_screen.dart';
 import 'package:recipes/screens/recipes_screen.dart';
+import 'package:recipes/screens/grocery_screen.dart';
+import 'package:recipes/models/tab_manager.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,49 +14,56 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    ExploreScreen(),
+    const ExploreScreen(),
     RecipesScreen(),
-    Container(color: Colors.blue),
+    const GroceryScreen(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Fooderlich',
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      ),
-      body: pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
+    return Consumer<TabManager>(
+      builder: (context, manager, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Fooderlich',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Recipes',
+          body: IndexedStack(index: manager.selectedTab, children: pages),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor:
+                Theme.of(context).textSelectionTheme.selectionColor,
+            currentIndex: manager.selectedTab,
+            onTap: (index) {
+              manager.goToTab(index);
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.explore),
+                label: 'Explore',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book),
+                label: 'Recipes',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'To Buy',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'To Buy',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
