@@ -106,7 +106,7 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
           )
         ],
         // 3
-        elevation: 0.0,
+        elevation: 1.0,
         // 4
         title: Text(
           'Grocery Item',
@@ -282,7 +282,7 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
           ],
         ),
         // 9
-        Text('${DateFormat('yyyy-MM-dd').format(_dueDate)}'),
+        Text(DateFormat('yyyy-MM-dd').format(_dueDate)),
       ],
     );
   }
@@ -318,7 +318,7 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
             ),
           ],
         ),
-        Text('${_timeOfDay.format(context)}'),
+        Text(_timeOfDay.format(context)),
       ],
     );
   }

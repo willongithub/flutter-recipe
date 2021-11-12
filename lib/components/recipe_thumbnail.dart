@@ -25,7 +25,7 @@ class RecipeThumbnail extends StatelessWidget {
             // 剪裁得到圆角矩形
             child: ClipRRect(
               child: Image.asset(
-                '${recipe.dishImage}',
+                recipe.dishImage,
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(12),

@@ -13,7 +13,6 @@ class Card1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      // TODO: Card1 decorate container
       child: Container(
         child: Stack(
           children: [
