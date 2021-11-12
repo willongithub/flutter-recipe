@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipes/home.dart';
 
+import 'package:recipes/home.dart';
 import 'fooderlich_theme.dart';
 
 void main() => runApp(const Fooderlich());
@@ -10,7 +10,7 @@ class Fooderlich extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FooderlichTheme.dark();
+    final theme = FooderlichTheme.light();
 
     return MaterialApp(
       theme: theme,
