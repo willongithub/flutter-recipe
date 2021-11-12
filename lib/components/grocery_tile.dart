@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+
 import '../models/grocery_item.dart';
 
 class GroceryTile extends StatelessWidget {
@@ -28,26 +29,31 @@ class GroceryTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // 2
-          Container(width: 5.0, color: item.color),
-          // 3
-          const SizedBox(width: 16.0),
-          // 4
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              // 5
-              Text(
-                item.name,
-                style: GoogleFonts.lato(
-                    decoration: textDecoration,
-                    fontSize: 21.0,
-                    fontWeight: FontWeight.bold),
+              Container(width: 5.0, color: item.color),
+              // 3
+              const SizedBox(width: 16.0),
+              // 4
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 5
+                  Text(
+                    item.name,
+                    style: GoogleFonts.lato(
+                      decoration: textDecoration,
+                      fontSize: 21.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  buildDate(),
+                  const SizedBox(height: 4.0),
+                  buildImportance(),
+                ],
               ),
-              const SizedBox(height: 4.0),
-              buildDate(),
-              const SizedBox(height: 4.0),
-              buildImportance(),
             ],
           ),
 
@@ -58,7 +64,9 @@ class GroceryTile extends StatelessWidget {
               Text(
                 item.quantity.toString(),
                 style: GoogleFonts.lato(
-                    decoration: textDecoration, fontSize: 21.0),
+                  decoration: textDecoration,
+                  fontSize: 21.0,
+                ),
               ),
               // 8
               buildCheckbox(),

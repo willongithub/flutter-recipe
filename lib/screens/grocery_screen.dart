@@ -32,7 +32,7 @@ class GroceryScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 // 8
-                onUpdate: (item) {},
+                onUpdate: (_) {},
               ),
             ),
           );
@@ -65,7 +65,6 @@ class EmptyGroceryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO 3: Replace and add layout widgets
     return Padding(
       padding: const EdgeInsets.all(30.0),
       // 2
@@ -138,17 +137,24 @@ class GroceryListScreen extends StatelessWidget {
             direction: DismissDirection.endToStart,
             // 8
             background: Container(
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                child: const Icon(Icons.delete_forever,
-                    color: Colors.white, size: 50.0)),
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              child: const Icon(
+                Icons.delete_forever,
+                color: Colors.white,
+                size: 50.0,
+              ),
+            ),
             // 9
             onDismissed: (direction) {
               // 10
               manager.deleteItem(index);
               // 11
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${item.name} dismissed')));
+                SnackBar(
+                  content: Text('${item.name} dismissed'),
+                ),
+              );
             },
             child: InkWell(
               child: GroceryTile(
@@ -176,7 +182,7 @@ class GroceryListScreen extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       // 6
-                      onCreate: (item) {},
+                      onCreate: (_) {},
                     ),
                   ),
                 );
@@ -190,7 +196,5 @@ class GroceryListScreen extends StatelessWidget {
         },
       ),
     );
-
-    return Container();
   }
 }
