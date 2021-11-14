@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/models.dart';
 import '../api/mock_fooderlich_service.dart';
+import '../models/models.dart';
 import '../components/components.dart';
 
 class RecipesScreen extends StatelessWidget {

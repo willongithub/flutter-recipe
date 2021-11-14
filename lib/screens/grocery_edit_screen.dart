@@ -11,16 +11,36 @@ class GroceryEditScreen extends StatefulWidget {
   // 1
   final Function(GroceryItem) onCreate;
   // 2
-  final Function(GroceryItem) onUpdate;
+  final Function(GroceryItem, int) onUpdate;
   // 3
   final GroceryItem? originalItem;
   // 4
   final bool isUpdating;
+  final int index;
+
+  static MaterialPage page({
+    GroceryItem? item,
+    int index = -1,
+    required Function(GroceryItem) onCreate,
+    required Function(GroceryItem, int) onUpdate,
+  }) {
+    return MaterialPage(
+      name: FooderlichPages.groceryEditPath,
+      key: ValueKey(FooderlichPages.groceryEditPath),
+      child: GroceryEditScreen(
+        originalItem: item,
+        index: index,
+        onCreate: onCreate,
+        onUpdate: onUpdate,
+      ),
+    );
+  }
 
   const GroceryEditScreen({
     Key? key,
     required this.onCreate,
     required this.onUpdate,
+    required this.index,
     this.originalItem,
   })  : isUpdating = (originalItem != null),
         super(key: key);
@@ -52,14 +72,12 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
       _timeOfDay = TimeOfDay(hour: date.hour, minute: date.minute);
       _dueDate = date;
     }
-
     // 2
     _nameController.addListener(() {
       setState(() {
         _name = _nameController.text;
       });
     });
-
     super.initState();
   }
 
@@ -94,10 +112,9 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
                   _timeOfDay.minute,
                 ),
               );
-
               if (widget.isUpdating) {
                 // 2
-                widget.onUpdate(groceryItem);
+                widget.onUpdate(groceryItem, widget.index);
               } else {
                 // 3
                 widget.onCreate(groceryItem);
@@ -307,7 +324,6 @@ class _GroceryEditScreenState extends State<GroceryEditScreen> {
                   initialTime: TimeOfDay.now(),
                   context: context,
                 );
-
                 // 3
                 setState(() {
                   if (timeOfDay != null) {

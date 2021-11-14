@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
-import 'grocery_edit_screen.dart';
+// import 'grocery_edit_screen.dart';
 import '../components/grocery_tile.dart';
 
 class GroceryScreen extends StatelessWidget {
@@ -16,26 +16,27 @@ class GroceryScreen extends StatelessWidget {
         child: const Icon(Icons.add),
         onPressed: () {
           // 1
-          final manager = Provider.of<GroceryManager>(context, listen: false);
+          Provider.of<GroceryManager>(context, listen: false).createNewItem();
+          // final manager = Provider.of<GroceryManager>(context, listen: false);
           // 2
-          Navigator.push(
-            context,
-            // 3
-            MaterialPageRoute(
-              // 4
-              builder: (context) => GroceryEditScreen(
-                // 5
-                onCreate: (item) {
-                  // 6
-                  manager.addItem(item);
-                  // 7
-                  Navigator.pop(context);
-                },
-                // 8
-                onUpdate: (_) {},
-              ),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   // 3
+          //   MaterialPageRoute(
+          //     // 4
+          //     builder: (context) => GroceryEditScreen(
+          //       // 5
+          //       onCreate: (item) {
+          //         // 6
+          //         manager.addItem(item);
+          //         // 7
+          //         Navigator.pop(context);
+          //       },
+          //       // 8
+          //       onUpdate: (_) {},
+          //     ),
+          //   ),
+          // );
         },
       ),
       // 7
@@ -98,7 +99,7 @@ class EmptyGroceryScreen extends StatelessWidget {
               ),
               color: Colors.green,
               onPressed: () {
-                Provider.of<TabManager>(context, listen: false).goToRecipes();
+                Provider.of<AppStateManager>(context, listen: false).goToTab(2);
               },
             ),
           ],
@@ -169,23 +170,25 @@ class GroceryListScreen extends StatelessWidget {
                 },
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GroceryEditScreen(
-                      originalItem: item,
-                      // 3
-                      onUpdate: (item) {
-                        // 4
-                        manager.updateItem(item, index);
-                        // 5
-                        Navigator.pop(context);
-                      },
-                      // 6
-                      onCreate: (_) {},
-                    ),
-                  ),
-                );
+                manager.groceryItemTapped(index);
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => GroceryEditScreen(
+                //       originalItem: item,
+                //       // 3
+                //       onUpdate: (item) {
+                //         // 4
+                //         manager.updateItem(item, index);
+                //         // 5
+                //         Navigator.pop(context);
+                //       },
+                //       // 6
+                //       onCreate: (_) {},
+                //     ),
+                //   ),
+                // );
               },
             ),
           );

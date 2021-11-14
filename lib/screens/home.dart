@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:recipes/screens/explore_screen.dart';
-import 'package:recipes/screens/recipes_screen.dart';
-import 'package:recipes/screens/grocery_screen.dart';
-import 'package:recipes/models/tab_manager.dart';
+import 'package:recipes/screens/screens.dart';
+import 'package:recipes/models/models.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({
+    Key? key,
+    required this.currentTab,
+  }) : super(key: key);
+
+  final int currentTab;
+
+  static MaterialPage page(int currentTab) {
+    return MaterialPage(
+      name: FooderlichPages.home,
+      key: ValueKey(FooderlichPages.home),
+      child: Home(
+        currentTab: currentTab,
+      ),
+    );
+  }
 
   @override
   _HomeState createState() => _HomeState();
@@ -30,7 +43,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TabManager>(
+    return Consumer<AppStateManager>(
       builder: (context, manager, child) {
         return Scaffold(
           appBar: AppBar(
@@ -38,14 +51,20 @@ class _HomeState extends State<Home> {
               'Fooderlich',
               style: Theme.of(context).textTheme.headline6,
             ),
+            actions: [
+              profileButton(),
+            ],
           ),
-          body: IndexedStack(index: manager.selectedTab, children: pages),
+          body: IndexedStack(index: manager.getSelectedTab, children: pages),
           bottomNavigationBar: BottomNavigationBar(
             selectedItemColor:
                 Theme.of(context).textSelectionTheme.selectionColor,
-            currentIndex: manager.selectedTab,
+            // currentIndex: manager.selectedTab,
+            currentIndex: widget.currentTab,
             onTap: (index) {
-              manager.goToTab(index);
+              // manager.goToTab(index);
+              Provider.of<AppStateManager>(context, listen: false)
+                  .goToTab(index);
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -58,12 +77,30 @@ class _HomeState extends State<Home> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.list),
-                label: 'To Buy',
+                label: 'Cart',
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget profileButton() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: GestureDetector(
+        child: const CircleAvatar(
+          backgroundColor: Colors.transparent,
+          backgroundImage: AssetImage(
+            'assets/profile_pics/person_stef.jpeg',
+          ),
+        ),
+        onTap: () {
+          Provider.of<ProfileManager>(context, listen: false)
+              .tapOnProfile(true);
+        },
+      ),
     );
   }
 }
