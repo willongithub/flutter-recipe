@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:recipes/screens/screens.dart';
 import 'package:recipes/models/models.dart';
@@ -27,11 +28,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // int _selectedIndex = 0;
+  int _selectedIndex = 0;
+  static const String prefSelectedIndexKey = 'selectedIndex';
 
   static List<Widget> pages = <Widget>[
     const ExploreScreen(),
-    RecipesScreen(),
+    const RecipesScreen(),
     const GroceryScreen(),
   ];
 
@@ -40,6 +42,41 @@ class _HomeState extends State<Home> {
   //     _selectedIndex = index;
   //   });
   // }
+
+  void saveCurrentIndex() async {
+    // 1
+    final prefs = await SharedPreferences.getInstance();
+    // 2
+    prefs.setInt(prefSelectedIndexKey, _selectedIndex);
+  }
+
+  void getCurrentIndex() async {
+    // 1
+    final prefs = await SharedPreferences.getInstance();
+    // 2
+    if (prefs.containsKey(prefSelectedIndexKey)) {
+      // 3
+      setState(() {
+        final index = prefs.getInt(prefSelectedIndexKey);
+        if (index != null) {
+          _selectedIndex = index;
+        }
+      });
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    saveCurrentIndex();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentIndex();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +97,13 @@ class _HomeState extends State<Home> {
             selectedItemColor:
                 Theme.of(context).textSelectionTheme.selectionColor,
             // currentIndex: manager.selectedTab,
-            currentIndex: widget.currentTab,
+            // currentIndex: widget.currentTab,
+            currentIndex: _selectedIndex,
             onTap: (index) {
               // manager.goToTab(index);
               Provider.of<AppStateManager>(context, listen: false)
                   .goToTab(index);
+              _onItemTapped(index);
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(

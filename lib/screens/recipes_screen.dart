@@ -1,31 +1,252 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/mock_fooderlich_service.dart';
-import '../models/models.dart';
+// import '../models/models.dart';
 import '../components/components.dart';
 
-class RecipesScreen extends StatelessWidget {
-  // 1
-  final exploreService = MockFooderlichService();
+class RecipesScreen extends StatefulWidget {
+  const RecipesScreen({Key? key}) : super(key: key);
 
-  RecipesScreen({Key? key}) : super(key: key);
+  @override
+  State<RecipesScreen> createState() => _RecipesScreenState();
+}
+
+class _RecipesScreenState extends State<RecipesScreen> {
+  final exploreService = MockFooderlichService();
+  static const String prefSearchKey = 'previousSearches';
+  late TextEditingController searchTextController;
+  final ScrollController _scrollController = ScrollController();
+  List currentSearchList = [];
+  int currentCount = 0;
+  int currentStartPosition = 0;
+  int currentEndPosition = 20;
+  int pageCount = 20;
+  bool hasMore = false;
+  bool loading = false;
+  bool inErrorState = false;
+  List<String> previousSearches = <String>[];
+
+  @override
+  void initState() {
+    super.initState();
+    getPreviousSearches();
+    searchTextController = TextEditingController(text: '');
+    _scrollController.addListener(() {
+      final triggerFetchMoreSize =
+          0.7 * _scrollController.position.maxScrollExtent;
+      if (_scrollController.position.pixels > triggerFetchMoreSize) {
+        if (hasMore &&
+            currentEndPosition < currentCount &&
+            !loading &&
+            !inErrorState) {
+          setState(() {
+            loading = true;
+            currentStartPosition = currentEndPosition;
+            currentEndPosition =
+                min(currentStartPosition + pageCount, currentCount);
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            _buildSearchCard(),
+            _buildRecipeLoader(context),
+          ],
+        ),
+      ),
+    );
     // 2
-    return FutureBuilder(
+    // return FutureBuilder(
+    //   // 3
+    //   future: exploreService.getRecipes(),
+    //   builder: (context, AsyncSnapshot<List<SimpleRecipe>> snapshot) {
+    //     // 4
+    //     if (snapshot.connectionState == ConnectionState.done) {
+    //       // 5
+    //       return RecipesGridView(recipes: snapshot.data ?? []);
+    //     } else {
+    //       // 6
+    //       return const Center(child: CircularProgressIndicator());
+    //     }
+    //   },
+    // );
+  }
+
+  void savePreviousSearches() async {
+    // 1
+    final prefs = await SharedPreferences.getInstance();
+    // 2
+    prefs.setStringList(prefSearchKey, previousSearches);
+  }
+
+  void getPreviousSearches() async {
+    // 1
+    final prefs = await SharedPreferences.getInstance();
+    // 2
+    if (prefs.containsKey(prefSearchKey)) {
       // 3
-      future: exploreService.getRecipes(),
-      builder: (context, AsyncSnapshot<List<SimpleRecipe>> snapshot) {
+      final searches = prefs.getStringList(prefSearchKey);
+      // 4
+      if (searches != null) {
+        previousSearches = searches;
+      } else {
+        previousSearches = <String>[];
+      }
+    }
+  }
+
+  void startSearch(String value) {
+    // 1
+    setState(() {
+      // 2
+      currentSearchList.clear();
+      currentCount = 0;
+      currentEndPosition = pageCount;
+      currentStartPosition = 0;
+      hasMore = true;
+      value = value.trim();
+
+      // 3
+      if (!previousSearches.contains(value)) {
         // 4
-        if (snapshot.connectionState == ConnectionState.done) {
-          // 5
-          return RecipesGridView(recipes: snapshot.data ?? []);
-        } else {
-          // 6
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+        previousSearches.add(value);
+        // 5
+        savePreviousSearches();
+      }
+    });
+  }
+
+  Widget _buildSearchCard() {
+    return Card(
+      elevation: 4,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Row(
+          children: [
+            // Replace
+            // const Icon(Icons.search),
+            IconButton(
+              icon: const Icon(Icons.search),
+              // 1
+              onPressed: () {
+                // 2
+                startSearch(searchTextController.text);
+                // Hide the keyboard by using the FocusScope class.
+                final currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+            ),
+            const SizedBox(
+              width: 6.0,
+            ),
+            // *** Start Replace
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Search',
+                      ),
+                      autofocus: false,
+                      // Set the keyboard action to TextInputAction.done.
+                      // This closes the keyboard when the user presses the
+                      // Done button.
+                      textInputAction: TextInputAction.done,
+                      // 5
+                      onSubmitted: (value) {
+                        if (!previousSearches.contains(value)) {
+                          previousSearches.add(value);
+                          savePreviousSearches();
+                        }
+                      },
+                      controller: searchTextController,
+                      // onChanged: (query) => {
+                      //   if (query.length >= 3)
+                      //     {
+                      //       // Rebuild list
+                      //       setState(
+                      //         () {
+                      //           currentSearchList.clear();
+                      //           currentCount = 0;
+                      //           currentEndPosition = pageCount;
+                      //           currentStartPosition = 0;
+                      //         },
+                      //       )
+                      //     }
+                      // },
+                    ),
+                  ),
+                  // Create a PopupMenuButton to show previous searches.
+                  PopupMenuButton(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.grey[300],
+                    ),
+                    // When the user selects an item from previous searches,
+                    // start a new search.
+                    onSelected: (String value) {
+                      searchTextController.text = value;
+                      startSearch(searchTextController.text);
+                    },
+                    itemBuilder: (BuildContext context) {
+                      // 8
+                      return previousSearches
+                          .map<CustomDropdownMenuItem<String>>((String value) {
+                        return CustomDropdownMenuItem<String>(
+                          text: value,
+                          value: value,
+                          callback: () {
+                            setState(() {
+                              // 9
+                              previousSearches.remove(value);
+                              Navigator.pop(context);
+                            });
+                          },
+                        );
+                      }).toList();
+                    },
+                  ),
+                ],
+              ),
+            ),
+            // *** End Replace
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecipeLoader(BuildContext context) {
+    if (searchTextController.text.length < 3) {
+      return Container();
+    }
+    // Show a loading indicator while waiting for the movies
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }
