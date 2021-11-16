@@ -30,6 +30,7 @@ class AppStateManager extends ChangeNotifier {
   void initializeApp() async {
     _loggedIn = await _appCache.isUserLoggedIn();
     _onboardingComplete = await _appCache.didCompleteOnboarding();
+    _selectedTab = await _appCache.getSavedTab();
     // 7
     Timer(
       const Duration(milliseconds: 2000),
@@ -56,9 +57,10 @@ class AppStateManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goToTab(index) {
+  void goToTab(index) async {
     _selectedTab = index;
     notifyListeners();
+    await _appCache.saveCurrentTab(index);
   }
 
   void goToRecipes() {
