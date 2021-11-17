@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/mock_fooderlich_service.dart';
-// import '../models/models.dart';
+import '../models/models.dart';
 import '../components/components.dart';
 
 class RecipesScreen extends StatefulWidget {
@@ -27,10 +31,12 @@ class _RecipesScreenState extends State<RecipesScreen> {
   bool loading = false;
   bool inErrorState = false;
   List<String> previousSearches = <String>[];
+  APIRecipeQuery? _currentRecipes1 = null;
 
   @override
   void initState() {
     super.initState();
+    loadRecipes();
     getPreviousSearches();
     searchTextController = TextEditingController(text: '');
     _scrollController.addListener(() {
@@ -49,6 +55,18 @@ class _RecipesScreenState extends State<RecipesScreen> {
           });
         }
       }
+    });
+  }
+
+  // rootBundle is the top-level property that holds references to all the
+  // items in the asset folder. This loads the file as a string.
+  Future loadRecipes() async {
+    // 1
+    final jsonString =
+        await rootBundle.loadString('assets/sample_data/recipes1.json');
+    setState(() {
+      // 2
+      _currentRecipes1 = APIRecipeQuery.fromJson(jsonDecode(jsonString));
     });
   }
 
@@ -241,12 +259,31 @@ class _RecipesScreenState extends State<RecipesScreen> {
   }
 
   Widget _buildRecipeLoader(BuildContext context) {
-    if (searchTextController.text.length < 3) {
+    // 1
+    if (_currentRecipes1 == null || _currentRecipes1?.hits == null) {
       return Container();
     }
-    // Show a loading indicator while waiting for the movies
-    return const Center(
-      child: CircularProgressIndicator(),
+    // Show a loading indicator while waiting for the recipes
+    return Center(
+      // 2
+      child: _buildRecipeCard(context, _currentRecipes1!.hits, 0),
+    );
+  }
+
+  Widget _buildRecipeCard(
+      BuildContext topLevelContext, List<APIHits> hits, int index) {
+    // 1
+    final recipe = hits[index].recipe;
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(topLevelContext, MaterialPageRoute(
+          builder: (context) {
+            return const RecipeDetails();
+          },
+        ));
+      },
+      // 2
+      child: recipeStringCard(recipe.image, recipe.label),
     );
   }
 }

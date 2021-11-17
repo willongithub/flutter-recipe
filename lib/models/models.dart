@@ -10,3 +10,4 @@ export 'app_state_manager.dart';
 export 'user.dart';
 export 'post.dart';
 export 'fooderlich_pages.dart';
+export 'recipe_model.dart';
