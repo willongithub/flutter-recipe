@@ -11,3 +11,5 @@ export 'user.dart';
 export 'post.dart';
 export 'fooderlich_pages.dart';
 export 'recipe_model.dart';
+export 'rest_response.dart';
+export 'rest_converter.dart';

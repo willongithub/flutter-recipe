@@ -1,10 +1,11 @@
 import 'dart:math';
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:chopper/chopper.dart';
 
 // import '../api/mock_fooderlich_service.dart';
 import '../models/models.dart';
@@ -29,8 +30,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
   // List currentSearchList = [];
   int currentCount = 0;
   int currentStartPosition = 0;
-  int currentEndPosition = 20;
-  int pageCount = 20;
+  int currentEndPosition = 5;
+  int pageCount = 5;
   bool hasMore = false;
   bool loading = false;
   bool inErrorState = false;
@@ -63,14 +64,14 @@ class _RecipesScreenState extends State<RecipesScreen> {
   }
 
   // 1
-  Future<APIRecipeQuery> getRecipeData(String query, int from, int to) async {
-    // 2
-    final recipeJson = await RecipeService().getRecipes(query, from, to);
-    // 3
-    final recipeMap = json.decode(recipeJson);
-    // 4
-    return APIRecipeQuery.fromJson(recipeMap);
-  }
+  // Future<APIRecipeQuery> getRecipeData(String query, int from, int to) async {
+  //   // 2
+  //   final recipeJson = await RecipeService().getRecipes(query, from, to);
+  //   // 3
+  //   final recipeMap = json.decode(recipeJson);
+  //   // 4
+  //   return APIRecipeQuery.fromJson(recipeMap);
+  // }
 
   // rootBundle is the top-level property that holds references to all the
   // items in the asset folder. This loads the file as a string.
@@ -281,10 +282,16 @@ class _RecipesScreenState extends State<RecipesScreen> {
       return Container();
     }
     // 2
-    return FutureBuilder<APIRecipeQuery>(
+    // return FutureBuilder<APIRecipeQuery>(
+    return FutureBuilder<Response<Result<APIRecipeQuery>>>(
       // 3
-      future: getRecipeData(searchTextController.text.trim(),
-          currentStartPosition, currentEndPosition),
+      // future: getRecipeData(searchTextController.text.trim(),
+      //     currentStartPosition, currentEndPosition),
+      future: RecipeService.create().queryRecipes(
+          searchTextController.text.trim(),
+          currentStartPosition,
+          currentEndPosition),
+
       // 4
       builder: (context, snapshot) {
         // 5
@@ -299,7 +306,22 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
           // 7
           loading = false;
-          final query = snapshot.data;
+          // final query = snapshot.data;
+          // 1
+          final result = snapshot.data?.body;
+          // If result is an error, return the current list of recipes.
+          if (result is Error) {
+            // Hit an error
+            inErrorState = true;
+            // return _buildRecipeList(context, currentSearchList);
+            return RecipeGrid(
+              scrollController: _scrollController,
+              hits: currentSearchList,
+            );
+          }
+          // 3
+          final query = (result as Success).value;
+
           inErrorState = false;
           if (query != null) {
             currentCount = query.count;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:logging/logging.dart';
 
 import 'fooderlich_theme.dart';
 import 'models/models.dart';
@@ -7,9 +8,18 @@ import 'navigation/app_router.dart';
 import 'navigation/app_route_parser.dart';
 
 void main() {
+  _setupLogging();
+
   runApp(
     const Fooderlich(),
   );
+}
+
+void _setupLogging() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((rec) {
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+  });
 }
 
 class Fooderlich extends StatefulWidget {
