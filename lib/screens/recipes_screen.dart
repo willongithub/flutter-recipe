@@ -92,17 +92,18 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            _buildSearchCard(),
-            _buildRecipeLoader(context),
-          ],
-        ),
+    // return Container(
+    // color: Colors.white,
+    // child:
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: <Widget>[
+          _buildSearchCard(),
+          _buildRecipeLoader(context),
+        ],
       ),
+      // ),
     );
     // 2
     // return FutureBuilder(
@@ -167,7 +168,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
   Widget _buildSearchCard() {
     return Card(
-      elevation: 4,
+      elevation: 5,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),

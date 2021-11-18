@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/components.dart';
-import '../models/models.dart';
+// import '../models/models.dart';
 
 class RecipeGrid extends StatelessWidget {
   final ScrollController scrollController;
@@ -18,10 +18,11 @@ class RecipeGrid extends StatelessWidget {
     // Use MediaQuery to get the device’s screen size. You then set a fixed
     // item height and create two columns of cards whose width is half the
     // device’s width.
-    final size = MediaQuery.of(context).size;
-    const itemColumn = 2;
-    const itemHeight = 310;
-    final itemWidth = size.width / itemColumn;
+    // final size = MediaQuery.of(context).size;
+    const itemColumn = 1;
+    // const itemHeight = 310;
+    // final itemWidth = size.width / itemColumn;
+    // final itemHeight = itemWidth;
     // 3
     return Flexible(
       // 4
@@ -30,9 +31,9 @@ class RecipeGrid extends StatelessWidget {
         // scrolling gets to about 70% from the bottom.
         controller: scrollController,
         // 6
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: itemColumn,
-          childAspectRatio: (itemWidth / itemHeight),
+          // childAspectRatio: (itemWidth / itemHeight),
         ),
         // 7
         itemCount: hits.length,
@@ -61,7 +62,8 @@ class RecipeGrid extends StatelessWidget {
         ));
       },
       // 2
-      child: recipeCard(recipe),
+      // child: recipeCard(recipe),
+      child: RecipeThumbnail(recipe: recipe),
     );
   }
 }

@@ -8,6 +8,11 @@ class FooderlichTheme {
       fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
+    bodyText2: GoogleFonts.notoSans(
+      fontSize: 10.0,
+      fontWeight: FontWeight.w500,
+      color: Colors.black,
+    ),
     headline1: GoogleFonts.notoSans(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
@@ -35,6 +40,11 @@ class FooderlichTheme {
       fontSize: 14.0,
       fontWeight: FontWeight.w700,
       color: Colors.white,
+    ),
+    bodyText2: GoogleFonts.notoSans(
+      fontSize: 10.0,
+      fontWeight: FontWeight.w500,
+      color: Colors.black,
     ),
     headline1: GoogleFonts.notoSans(
       fontSize: 32.0,
