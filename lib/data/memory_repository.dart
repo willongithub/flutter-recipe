@@ -81,7 +81,6 @@ class MemoryRepository extends Repository {
   //   return 0;
   // }
   @override
-// 1
   Future<int> insertRecipe(Recipe recipe) {
     _currentRecipes.add(recipe);
     // 2
@@ -97,7 +96,7 @@ class MemoryRepository extends Repository {
   @override
   Future<List<int>> insertIngredients(List<Ingredient> ingredients) {
     // 16
-    _recipeStreamController.sink.add(ingredients);
+    _ingredientStreamController.sink.add(_currentIngredients);
     // if (ingredients.length != 0) {
     if (ingredients.isNotEmpty) {
       // 17
@@ -121,15 +120,15 @@ class MemoryRepository extends Repository {
     }
     // 22
     // notifyListeners();
-    return Future.value(null);
+    return Future.value();
   }
 
   @override
   Future<void> deleteIngredient(Ingredient ingredient) {
     // 23
     _currentIngredients.remove(ingredient);
-    _recipeStreamController.sink.add(_currentRecipes);
-    return Future.value(null);
+    _ingredientStreamController.sink.add(_currentIngredients);
+    return Future.value();
   }
 
   @override
@@ -137,9 +136,9 @@ class MemoryRepository extends Repository {
     // 24
     _currentIngredients
         .removeWhere((ingredient) => ingredients.contains(ingredient));
-    _recipeStreamController.sink.add(_currentRecipes);
+    _ingredientStreamController.sink.add(_currentIngredients);
     // notifyListeners();
-    return Future.value(null);
+    return Future.value();
   }
 
   @override
@@ -147,9 +146,9 @@ class MemoryRepository extends Repository {
     // 25
     _currentIngredients
         .removeWhere((ingredient) => ingredient.recipeId == recipeId);
-    _recipeStreamController.sink.add(_currentRecipes);
+    _ingredientStreamController.sink.add(_currentIngredients);
     // notifyListeners();
-    return Future.value(null);
+    return Future.value();
   }
 
   // 6

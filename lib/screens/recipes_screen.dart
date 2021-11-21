@@ -285,7 +285,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       return Container();
     }
 
-    Future<Response<Result<APIRecipeQuery>>> _service;
+    dynamic _service;
 
     if (Provider.of<ProfileManager>(context).mockQuery) {
       _service = Provider.of<MockService>(context).queryRecipes(

@@ -48,7 +48,7 @@ class RecipeGrid extends StatelessWidget {
   }
 
   Widget _buildRecipeCard(
-    BuildContext topLevelContext,
+    BuildContext context,
     List<dynamic> hits,
     int index,
   ) {
@@ -56,7 +56,7 @@ class RecipeGrid extends StatelessWidget {
     final recipe = hits[index].recipe;
     return GestureDetector(
       onTap: () {
-        Navigator.push(topLevelContext, MaterialPageRoute(
+        Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             final detailRecipe = Recipe(
               label: recipe.label,

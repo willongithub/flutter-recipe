@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
-import 'package:recipes/data/models/models.dart';
-
-import '../data/repository.dart';
+import '../../data/models/models.dart';
+import '../../data/repository.dart';
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
@@ -13,14 +13,14 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-  final checkBoxValues = <int, bool>{};
+  Map<int, bool> checkBoxValues = {};
 
   @override
   Widget build(BuildContext context) {
     // return Consumer<MemoryRepository>(
     //   builder: (context, repository, child) {
     //     final ingredients = repository.findAllIngredients();
-    final repository = Provider.of<Repository>(context);
+    final repository = Provider.of<Repository>(context, listen: false);
     return StreamBuilder(
       stream: repository.watchAllIngredients(),
       builder: (context, snapshot) {
@@ -28,6 +28,7 @@ class _ShoppingListState extends State<ShoppingList> {
           final ingredients = snapshot.data as List<Ingredient>?;
           if (ingredients == null) {
             return Container();
+            // return const Center(child: CircularProgressIndicator());
           }
 
           return ListView.builder(

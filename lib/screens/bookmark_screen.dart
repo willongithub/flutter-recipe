@@ -81,22 +81,23 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                       ),
                     ),
                   ),
-                  actions: <Widget>[
-                    IconSlideAction(
-                      caption: 'Delete',
-                      color: Colors.transparent,
-                      foregroundColor: Colors.black,
-                      iconWidget: const Icon(Icons.delete, color: Colors.red),
-                      onTap: () => deleteRecipe(repository, recipe),
-                    ),
-                  ],
+                  // actions: <Widget>[
+                  //   IconSlideAction(
+                  //     caption: 'Delete',
+                  //     color: Colors.transparent,
+                  //     foregroundColor: Colors.black,
+                  //     iconWidget: const Icon(Icons.delete, color: Colors.red),
+                  //     onTap: () => deleteRecipe(repository, recipe),
+                  //   ),
+                  // ],
                   secondaryActions: <Widget>[
                     IconSlideAction(
                       caption: 'Delete',
                       color: Colors.transparent,
                       foregroundColor: Colors.black,
                       iconWidget: const Icon(Icons.delete, color: Colors.red),
-                      onTap: () => deleteRecipe(repository, recipe),
+                      // onTap: () => deleteRecipe(repository, recipe),
+                      onTap: () => repository.deleteRecipe(recipe),
                     ),
                   ],
                 ),

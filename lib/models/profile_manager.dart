@@ -21,7 +21,7 @@ class ProfileManager extends ChangeNotifier {
   var _didSelectUser = false;
   var _tapOnAbout = false;
   var _darkMode = false;
-  var _mockQuery = false;
+  var _mockQuery = true;
 
   set darkMode(bool toggle) {
     _darkMode = toggle;
