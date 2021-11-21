@@ -8,15 +8,20 @@ import 'models/models.dart';
 import 'navigation/app_router.dart';
 import 'navigation/app_route_parser.dart';
 import 'data/memory_repository.dart';
+import 'data/sqlite_repository.dart';
+import 'data/moor_repository.dart';
 import 'data/repository.dart';
 import 'api/mock_service.dart';
 import 'api/recipe_service.dart';
 import 'api/service_interface.dart';
 
-void main() {
+Future<void> main() async {
   _setupLogging();
 
-  // Provider.debugCheckInvalidValueType = null;
+  // final repository = SqliteRepository();
+  // await repository.init();
+
+  // runApp(Fooderlich(repository: repository));
 
   runApp(
     const Fooderlich(),
@@ -41,9 +46,11 @@ class _FooderlichState extends State<Fooderlich> {
   final _groceryManager = GroceryManager();
   final _profileManager = ProfileManager();
   final _appStateManager = AppStateManager();
-  final _memoryRepository = MemoryRepository();
+  // final _memoryRepository = MemoryRepository();
   final _service = RecipeService.create();
   final _mockService = MockService()..create();
+
+  late Repository repository;
 
   late AppRouter _appRouter;
 
@@ -57,7 +64,14 @@ class _FooderlichState extends State<Fooderlich> {
       profileManager: _profileManager,
       // memoryRepository: _memoryRepository,
     );
+    setUpRepository();
     super.initState();
+  }
+
+  Future<void> setUpRepository() async {
+    // repository = SqliteRepository();
+    final repository = MoorRepository();
+    await repository.init();
   }
 
   @override
@@ -68,13 +82,17 @@ class _FooderlichState extends State<Fooderlich> {
         ChangeNotifierProvider(create: (_) => _profileManager),
         ChangeNotifierProvider(create: (_) => _appStateManager),
         // ChangeNotifierProvider(create: (_) => _memoryRepository),
-        Provider<Repository>(create: (_) => _memoryRepository),
+        // Provider<Repository>(create: (_) => _memoryRepository),
         Provider<ServiceInterface>(create: (_) => _service),
         Provider<MockService>(create: (_) => _mockService),
         // Provider<GroceryManager>(create: (_) => _groceryManager),
         // Provider<ProfileManager>(create: (_) => _profileManager),
         // Provider<AppStateManager>(create: (_) => _appStateManager),
         // Provider<MemoryRepository>(create: (_) => _memoryRepository),
+        Provider<Repository>(
+          create: (_) => repository,
+          dispose: (_, Repository repository) => repository.close(),
+        )
       ],
       // providers: [
       //   // 2
