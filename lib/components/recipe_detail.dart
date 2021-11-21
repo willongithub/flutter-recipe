@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:recipes/fooderlich_theme.dart';
 import '../../models/recipe_model.dart';
 import '../../data/models/models.dart';
-import '../../data/memory_repository.dart';
+// import '../../data/memory_repository.dart';
+import '../../data/repository.dart';
 
 class RecipeDetails extends StatelessWidget {
   final Recipe recipe;
@@ -20,7 +21,8 @@ class RecipeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final repository = Provider.of<MemoryRepository>(context);
+    // final repository = Provider.of<MemoryRepository>(context);
+    final repository = Provider.of<Repository>(context);
 
     return Scaffold(
       body: SafeArea(

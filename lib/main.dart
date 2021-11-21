@@ -8,7 +8,10 @@ import 'models/models.dart';
 import 'navigation/app_router.dart';
 import 'navigation/app_route_parser.dart';
 import 'data/memory_repository.dart';
+import 'data/repository.dart';
 import 'api/mock_service.dart';
+import 'api/recipe_service.dart';
+import 'api/service_interface.dart';
 
 void main() {
   _setupLogging();
@@ -39,7 +42,7 @@ class _FooderlichState extends State<Fooderlich> {
   final _profileManager = ProfileManager();
   final _appStateManager = AppStateManager();
   final _memoryRepository = MemoryRepository();
-
+  final _service = RecipeService.create();
   final _mockService = MockService()..create();
 
   late AppRouter _appRouter;
@@ -52,7 +55,7 @@ class _FooderlichState extends State<Fooderlich> {
       appStateManager: _appStateManager,
       groceryManager: _groceryManager,
       profileManager: _profileManager,
-      memoryRepository: _memoryRepository,
+      // memoryRepository: _memoryRepository,
     );
     super.initState();
   }
@@ -64,8 +67,10 @@ class _FooderlichState extends State<Fooderlich> {
         ChangeNotifierProvider(create: (_) => _groceryManager),
         ChangeNotifierProvider(create: (_) => _profileManager),
         ChangeNotifierProvider(create: (_) => _appStateManager),
-        ChangeNotifierProvider(create: (_) => _memoryRepository),
-        Provider(create: (_) => _mockService),
+        // ChangeNotifierProvider(create: (_) => _memoryRepository),
+        Provider<Repository>(create: (_) => _memoryRepository),
+        Provider<ServiceInterface>(create: (_) => _service),
+        Provider<MockService>(create: (_) => _mockService),
         // Provider<GroceryManager>(create: (_) => _groceryManager),
         // Provider<ProfileManager>(create: (_) => _profileManager),
         // Provider<AppStateManager>(create: (_) => _appStateManager),

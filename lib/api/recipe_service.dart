@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 
 import 'package:recipes/models/models.dart';
 import 'keys.dart';
+import 'service_interface.dart';
 
 part 'recipe_service.chopper.dart';
 
@@ -16,10 +17,12 @@ const String apiUrl = url_chopper;
 // RecipeService is an abstract class because you only need to define the
 // method signatures. The generator script will take these definitions and
 // generate all the code needed.
-abstract class RecipeService extends ChopperService {
+abstract class RecipeService extends ChopperService
+    implements ServiceInterface {
   // @Get is an annotation that tells the generator this is a GET request with
   // a path named search, which you previously removed from the apiUrl. There
   // are other HTTP methods you can use, such as @Post, @Put and @Delete.
+  @override
   @Get(path: 'search')
   // returns a Future of a Response using the previously created APIRecipeQuery.
   // The abstract Result that you created above will hold either a value or an

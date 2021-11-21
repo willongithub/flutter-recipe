@@ -9,6 +9,7 @@ class FooderlichTab {
   static const int recipes = 1;
   static const int basket = 3;
   static const int bookmark = 2;
+  static const int shopping = 4;
 }
 
 class AppStateManager extends ChangeNotifier {

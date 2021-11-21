@@ -36,6 +36,7 @@ class _HomeState extends State<Home> {
     const RecipesScreen(),
     const BookmarkScreen(),
     const GroceryScreen(),
+    const ShoppingList(),
   ];
 
   // void _onItemTapped(int index) {
@@ -122,6 +123,10 @@ class _HomeState extends State<Home> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_cart),
                 label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'List',
               ),
             ],
           ),

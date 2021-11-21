@@ -8,8 +8,9 @@ import 'package:chopper/chopper.dart';
 
 import '../models/rest_response.dart';
 import '../models/recipe_model.dart';
+import 'service_interface.dart';
 
-class MockService {
+class MockService implements ServiceInterface {
   // 1
   late APIRecipeQuery _currentRecipes1;
   late APIRecipeQuery _currentRecipes2;
@@ -34,6 +35,7 @@ class MockService {
     _currentRecipes2 = APIRecipeQuery.fromJson(jsonDecode(jsonString));
   }
 
+  @override
   Future<Response<Result<APIRecipeQuery>>> queryRecipes(
       String query, int from, int to) {
     // 6

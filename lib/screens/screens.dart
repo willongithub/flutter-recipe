@@ -10,3 +10,4 @@ export 'recipes_screen.dart';
 export 'splash_screen.dart';
 export 'webview_screen.dart';
 export 'bookmark_screen.dart';
+export 'shopping_screen.dart';

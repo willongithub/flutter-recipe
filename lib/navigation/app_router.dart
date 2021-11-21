@@ -12,7 +12,7 @@ class AppRouter extends RouterDelegate<AppLink>
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
-  final MemoryRepository memoryRepository;
+  // final MemoryRepository memoryRepository;
   // 3
   final AppStateManager appStateManager;
   // 4
@@ -24,12 +24,12 @@ class AppRouter extends RouterDelegate<AppLink>
     required this.appStateManager,
     required this.groceryManager,
     required this.profileManager,
-    required this.memoryRepository,
+    // required this.memoryRepository,
   }) : navigatorKey = GlobalKey<NavigatorState>() {
     appStateManager.addListener(notifyListeners);
     groceryManager.addListener(notifyListeners);
     profileManager.addListener(notifyListeners);
-    memoryRepository.addListener(notifyListeners);
+    // memoryRepository.addListener(notifyListeners);
   }
 
   @override
@@ -37,7 +37,7 @@ class AppRouter extends RouterDelegate<AppLink>
     appStateManager.removeListener(notifyListeners);
     groceryManager.removeListener(notifyListeners);
     profileManager.removeListener(notifyListeners);
-    memoryRepository.removeListener(notifyListeners);
+    // memoryRepository.removeListener(notifyListeners);
     super.dispose();
   }
 

@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 // import '../api/mock_fooderlich_service.dart';
 import '../models/models.dart';
 import '../components/components.dart';
-import '../api/recipe_service.dart';
+// import '../api/recipe_service.dart';
 import '../api/mock_service.dart';
+import '../api/service_interface.dart';
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({Key? key}) : super(key: key);
@@ -284,7 +285,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       return Container();
     }
 
-    var _service;
+    Future<Response<Result<APIRecipeQuery>>> _service;
 
     if (Provider.of<ProfileManager>(context).mockQuery) {
       _service = Provider.of<MockService>(context).queryRecipes(
@@ -292,7 +293,11 @@ class _RecipesScreenState extends State<RecipesScreen> {
           currentStartPosition,
           currentEndPosition);
     } else {
-      _service = RecipeService.create().queryRecipes(
+      // _service = RecipeService.create().queryRecipes(
+      //     searchTextController.text.trim(),
+      //     currentStartPosition,
+      //     currentEndPosition);
+      _service = Provider.of<ServiceInterface>(context).queryRecipes(
           searchTextController.text.trim(),
           currentStartPosition,
           currentEndPosition);
