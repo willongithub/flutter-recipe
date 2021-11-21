@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
   static List<Widget> pages = <Widget>[
     const ExploreScreen(),
     const RecipesScreen(),
+    const BookmarkScreen(),
     const GroceryScreen(),
   ];
 
@@ -107,15 +108,19 @@ class _HomeState extends State<Home> {
             },
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.explore),
+                icon: Icon(Icons.menu_book),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.book),
+                icon: Icon(Icons.restaurant_menu),
                 label: 'Recipes',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.list),
+                icon: Icon(Icons.bookmarks),
+                label: 'Bookmark',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
                 label: 'Cart',
               ),
             ],

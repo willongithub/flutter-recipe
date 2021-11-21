@@ -7,7 +7,8 @@ import 'app_cache.dart';
 class FooderlichTab {
   static const int explore = 0;
   static const int recipes = 1;
-  static const int basket = 2;
+  static const int basket = 3;
+  static const int bookmark = 2;
 }
 
 class AppStateManager extends ChangeNotifier {

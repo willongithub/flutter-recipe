@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chopper/chopper.dart';
+import 'package:provider/provider.dart';
 
 // import '../api/mock_fooderlich_service.dart';
 import '../models/models.dart';
 import '../components/components.dart';
 import '../api/recipe_service.dart';
+import '../api/mock_service.dart';
 
 class RecipesScreen extends StatefulWidget {
   const RecipesScreen({Key? key}) : super(key: key);
@@ -281,16 +283,40 @@ class _RecipesScreenState extends State<RecipesScreen> {
     if (searchTextController.text.length < 3) {
       return Container();
     }
+
+    var _service;
+
+    if (Provider.of<ProfileManager>(context).mockQuery) {
+      _service = Provider.of<MockService>(context).queryRecipes(
+          searchTextController.text.trim(),
+          currentStartPosition,
+          currentEndPosition);
+    } else {
+      _service = RecipeService.create().queryRecipes(
+          searchTextController.text.trim(),
+          currentStartPosition,
+          currentEndPosition);
+    }
     // 2
     // return FutureBuilder<APIRecipeQuery>(
     return FutureBuilder<Response<Result<APIRecipeQuery>>>(
       // 3
       // future: getRecipeData(searchTextController.text.trim(),
       //     currentStartPosition, currentEndPosition),
-      future: RecipeService.create().queryRecipes(
-          searchTextController.text.trim(),
-          currentStartPosition,
-          currentEndPosition),
+
+      // Query from remote
+      // future: RecipeService.create().queryRecipes(
+      //     searchTextController.text.trim(),
+      //     currentStartPosition,
+      //     currentEndPosition),
+
+      // Using mock service.
+      // future: Provider.of<MockService>(context).queryRecipes(
+      //     searchTextController.text.trim(),
+      //     currentStartPosition,
+      //     currentEndPosition),
+
+      future: _service,
 
       // 4
       builder: (context, snapshot) {

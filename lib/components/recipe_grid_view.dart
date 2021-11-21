@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../components/components.dart';
-// import '../models/models.dart';
+import '../models/models.dart';
+import '../../data/models/models.dart';
 
 class RecipeGrid extends StatelessWidget {
   final ScrollController scrollController;
@@ -57,7 +58,17 @@ class RecipeGrid extends StatelessWidget {
       onTap: () {
         Navigator.push(topLevelContext, MaterialPageRoute(
           builder: (context) {
-            return const RecipeDetails();
+            final detailRecipe = Recipe(
+              label: recipe.label,
+              image: recipe.image,
+              url: recipe.url,
+              calories: recipe.calories,
+              totalTime: recipe.totalTime,
+              totalWeight: recipe.totalWeight,
+            );
+
+            detailRecipe.ingredients = convertIngredients(recipe.ingredients);
+            return RecipeDetails(recipe: detailRecipe);
           },
         ));
       },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:logging/logging.dart';
 
@@ -6,9 +7,13 @@ import 'fooderlich_theme.dart';
 import 'models/models.dart';
 import 'navigation/app_router.dart';
 import 'navigation/app_route_parser.dart';
+import 'data/memory_repository.dart';
+import 'api/mock_service.dart';
 
 void main() {
   _setupLogging();
+
+  // Provider.debugCheckInvalidValueType = null;
 
   runApp(
     const Fooderlich(),
@@ -33,6 +38,9 @@ class _FooderlichState extends State<Fooderlich> {
   final _groceryManager = GroceryManager();
   final _profileManager = ProfileManager();
   final _appStateManager = AppStateManager();
+  final _memoryRepository = MemoryRepository();
+
+  final _mockService = MockService()..create();
 
   late AppRouter _appRouter;
 
@@ -44,6 +52,7 @@ class _FooderlichState extends State<Fooderlich> {
       appStateManager: _appStateManager,
       groceryManager: _groceryManager,
       profileManager: _profileManager,
+      memoryRepository: _memoryRepository,
     );
     super.initState();
   }
@@ -52,10 +61,29 @@ class _FooderlichState extends State<Fooderlich> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => _groceryManager),
-        ChangeNotifierProvider(create: (context) => _profileManager),
-        ChangeNotifierProvider(create: (context) => _appStateManager),
+        ChangeNotifierProvider(create: (_) => _groceryManager),
+        ChangeNotifierProvider(create: (_) => _profileManager),
+        ChangeNotifierProvider(create: (_) => _appStateManager),
+        ChangeNotifierProvider(create: (_) => _memoryRepository),
+        Provider(create: (_) => _mockService),
+        // Provider<GroceryManager>(create: (_) => _groceryManager),
+        // Provider<ProfileManager>(create: (_) => _profileManager),
+        // Provider<AppStateManager>(create: (_) => _appStateManager),
+        // Provider<MemoryRepository>(create: (_) => _memoryRepository),
       ],
+      // providers: [
+      //   // 2
+      //   ChangeNotifierProvider<MemoryRepository>(
+      //     lazy: false,
+      //     create: (_) => MemoryRepository(),
+      //   ),
+      //   // 3
+      //   Provider(
+      //     // 4
+      //     create: (_) => MockService()..create(),
+      //     lazy: false,
+      //   ),
+      // ],
       child: Consumer<ProfileManager>(
         builder: (context, manager, child) {
           ThemeData theme;

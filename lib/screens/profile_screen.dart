@@ -57,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildMenu() {
     return ListView(
       children: [
+        buildMockServiceRow(),
         buildDarkModeRow(),
         ListTile(
           title: const Text('About'),
@@ -81,22 +82,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget buildMockServiceRow() {
+    return SwitchListTile(
+      title: const Text('Mock Query'),
+      value: widget.user.mockQuery,
+      onChanged: (value) {
+        Provider.of<ProfileManager>(context, listen: false).mockQuery = value;
+      },
+    );
+  }
+
   Widget buildDarkModeRow() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text('Dark Mode'),
-          Switch(
-            value: widget.user.darkMode,
-            onChanged: (value) {
-              Provider.of<ProfileManager>(context, listen: false).darkMode =
-                  value;
-            },
-          )
-        ],
-      ),
+    // return Padding(
+    //   padding: const EdgeInsets.all(16.0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       const Text('Dark Mode'),
+    //       Switch(
+    //         value: widget.user.darkMode,
+    //         onChanged: (value) {
+    //           Provider.of<ProfileManager>(context, listen: false).darkMode =
+    //               value;
+    //         },
+    //       )
+    //     ],
+    //   ),
+    // );
+    return SwitchListTile(
+      title: const Text('Dark Mode'),
+      value: widget.user.darkMode,
+      onChanged: (value) {
+        Provider.of<ProfileManager>(context, listen: false).darkMode = value;
+      },
     );
   }
 
@@ -110,17 +128,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 16.0),
         Text(
           widget.user.firstName,
-          style: const TextStyle(
-            fontSize: 21,
-          ),
+          style: Theme.of(context).textTheme.headline1,
         ),
-        Text(widget.user.role),
+        Text(
+          widget.user.role,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
         Text(
           '${widget.user.points} points',
-          style: const TextStyle(
-            fontSize: 30,
-            color: Colors.green,
-          ),
+          style: Theme.of(context).textTheme.headline2,
         ),
       ],
     );

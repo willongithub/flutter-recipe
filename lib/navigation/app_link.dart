@@ -5,6 +5,7 @@ class AppLink {
   static const String kLoginPath = '/login';
   static const String kProfilePath = '/profile';
   static const String kEditPath = '/edit';
+  static const String kBookmarkPath = '/bookmark';
   // 2
   static const String kTabParam = 'tab';
   static const String kIdParam = 'id';

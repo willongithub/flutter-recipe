@@ -5,6 +5,7 @@ class User {
   final String profileImageUrl;
   final int points;
   final bool darkMode;
+  final bool mockQuery;
 
   User({
     required this.firstName,
@@ -13,5 +14,6 @@ class User {
     required this.profileImageUrl,
     required this.points,
     required this.darkMode,
+    required this.mockQuery,
   });
 }

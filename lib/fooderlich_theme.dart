@@ -84,6 +84,7 @@ class FooderlichTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
       ),
       textTheme: lightTextTheme,
     );
@@ -102,6 +103,7 @@ class FooderlichTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
       ),
       textTheme: darkTextTheme,
     );

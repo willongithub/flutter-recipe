@@ -51,7 +51,7 @@ class GroceryScreen extends StatelessWidget {
       builder: (context, manager, child) {
         // 3
         if (manager.groceryItems.isNotEmpty) {
-          return GroceryListScreen(manager: manager);
+          return ListGroceryScreen(manager: manager);
         } else {
           // 4
           return const EmptyGroceryScreen();
@@ -109,10 +109,10 @@ class EmptyGroceryScreen extends StatelessWidget {
   }
 }
 
-class GroceryListScreen extends StatelessWidget {
+class ListGroceryScreen extends StatelessWidget {
   final GroceryManager manager;
 
-  const GroceryListScreen({
+  const ListGroceryScreen({
     Key? key,
     required this.manager,
   }) : super(key: key);

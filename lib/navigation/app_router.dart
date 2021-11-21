@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipes/data/memory_repository.dart';
 
 import '../models/models.dart';
 import '../screens/screens.dart';
@@ -11,6 +12,7 @@ class AppRouter extends RouterDelegate<AppLink>
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
+  final MemoryRepository memoryRepository;
   // 3
   final AppStateManager appStateManager;
   // 4
@@ -22,10 +24,12 @@ class AppRouter extends RouterDelegate<AppLink>
     required this.appStateManager,
     required this.groceryManager,
     required this.profileManager,
+    required this.memoryRepository,
   }) : navigatorKey = GlobalKey<NavigatorState>() {
     appStateManager.addListener(notifyListeners);
     groceryManager.addListener(notifyListeners);
     profileManager.addListener(notifyListeners);
+    memoryRepository.addListener(notifyListeners);
   }
 
   @override
@@ -33,6 +37,7 @@ class AppRouter extends RouterDelegate<AppLink>
     appStateManager.removeListener(notifyListeners);
     groceryManager.removeListener(notifyListeners);
     profileManager.removeListener(notifyListeners);
+    memoryRepository.removeListener(notifyListeners);
     super.dispose();
   }
 
