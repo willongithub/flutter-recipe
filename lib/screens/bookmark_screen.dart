@@ -64,11 +64,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    color: Colors.white,
+                    // color: Colors.white,
                     child: Align(
                       alignment: Alignment.center,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(4.0),
                         child: ListTile(
                           leading: CachedNetworkImage(
                             imageUrl: recipe.image ?? '',

@@ -7,9 +7,9 @@ import 'fooderlich_theme.dart';
 import 'models/models.dart';
 import 'navigation/app_router.dart';
 import 'navigation/app_route_parser.dart';
-import 'data/memory_repository.dart';
+// import 'data/memory_repository.dart';
 import 'data/sqlite_repository.dart';
-import 'data/moor_repository.dart';
+// import 'data/moor_repository.dart';
 import 'data/repository.dart';
 import 'api/mock_service.dart';
 import 'api/recipe_service.dart';
@@ -69,8 +69,8 @@ class _FooderlichState extends State<Fooderlich> {
   }
 
   Future<void> setUpRepository() async {
-    // repository = SqliteRepository();
-    final repository = MoorRepository();
+    repository = SqliteRepository();
+    // final repository = MoorRepository();
     await repository.init();
   }
 

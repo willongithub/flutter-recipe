@@ -86,14 +86,18 @@ class EmptyGroceryScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             ),
             const SizedBox(height: 16.0),
-            const Text(
+            Text(
               'Shopping for ingredients?\n'
               'Tap the + button to write them down!',
               textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             MaterialButton(
               textColor: Colors.white,
-              child: const Text('Browse Recipes'),
+              child: Text(
+                'Browse Recipes',
+                style: Theme.of(context).textTheme.headline3,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),
